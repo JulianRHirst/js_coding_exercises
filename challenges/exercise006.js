@@ -6,6 +6,7 @@
  */
 export const sumMultiples = (arr) => {
   if (arr === undefined) throw new Error("arr is required");
+  return sumMultiples.filter(value => value % 3 == 0 || value % 5 ==0 )
 };
 
 /**
@@ -15,15 +16,26 @@ export const sumMultiples = (arr) => {
  */
 export const isValidDNA = (str) => {
   if (str === undefined) throw new Error("str is required");
+  const regex = /^[acgt]+$/;
+  return regex.test(str.toLowerCase());
 };
 
 /**
- * This function will receive a valid DNA string (see above) and should return a string of the complementary base pairs. In DNA, T always pairs with A, and C always pairs with G. So a string of "ACTG" would have a complementary DNA string of "TGAC".
+ * This function will receive a valid DNA string (see above) and should return a string of the 
+ * // complementary base pairs. In DNA, T always pairs with A, and C always pairs with G. 
+ * // So a string of "ACTG" would have a complementary DNA string of "TGAC".
  * @param {String} str
  * @returns {String}
  */
 export const getComplementaryDNA = (str) => {
   if (str === undefined) throw new Error("str is required");
+  const basePairs = {
+    A: "T",
+    C: "G",
+    G: "C",
+    T: "A"
+  };
+  return str.split("").map(base => basePair[base] ).join("");
 };
 
 /**
@@ -33,6 +45,25 @@ export const getComplementaryDNA = (str) => {
  */
 export const isItPrime = (n) => {
   if (n === undefined) throw new Error("n is required");
+
+  // If n is less than 2, it is not a prime number
+  if (n < 2) return false;
+
+  // If n is 2, it is a prime number
+  if (n === 2) return true;
+
+  // If n is even and not 2, it is not a prime number
+  if (n % 2 === 0) return false;
+
+  // Check if n is divisible by any odd number from 3 to the square root of n
+  // If it is, then it is not a prime number
+  for (let i = 3; i <= Math.sqrt(n); i += 2) {
+    if (n % i === 0) return false;
+  }
+
+  // If none of the above conditions are met, then n is a prime number
+  return true;
+
 };
 
 /**
@@ -49,6 +80,17 @@ export const isItPrime = (n) => {
 export const createMatrix = (n, fill) => {
   if (n === undefined) throw new Error("n is required");
   if (fill === undefined) throw new Error("fill is required");
+ // Create an empty array
+ let matrix = [];
+
+  // Use a loop to create n arrays, each filled with n items
+  for (let i = 0; i < n; i++) {
+    matrix.push(Array(n).fill(fill));
+  }
+
+  // Return the matrix
+  return matrix;
+
 };
 
 /**
@@ -66,4 +108,10 @@ export const createMatrix = (n, fill) => {
 export const areWeCovered = (staff, day) => {
   if (staff === undefined) throw new Error("staff is required");
   if (day === undefined) throw new Error("day is required");
+
+  const isCafeOpen = (staff, day) => {
+    const staffForDay = staff.filter(s => s.rota.includes(day));
+  
+    return staffForDay.length >= 3;
+  }
 };

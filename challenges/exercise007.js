@@ -4,6 +4,7 @@
  */
 export const sumDigits = (n) => {
   if (n === undefined) throw new Error("n is required");
+  return n.split("").reduce((total, value) => total + parseInt(value), 0);
 };
 
 /**
@@ -14,13 +15,20 @@ export const sumDigits = (n) => {
  * @param {Number} end
  * @param {Number} step
  */
-export const createRange = (start, end, step) => {
+export const createRange = (start, end, step = 1) => {
   if (start === undefined) throw new Error("start is required");
   if (end === undefined) throw new Error("end is required");
-  if (step === undefined)
-    console.log(
-      "FYI: Optional step parameter not provided. Remove this check once you've handled the optional step!"
-    );
+
+    // Create an empty array
+  let rangeArray = [];
+  
+  for (let value = start; value <= end; value += step) {
+    rangeArray.push(value);
+  }
+
+  return rangeArray;
+  
+
 };
 
 /**
@@ -55,6 +63,13 @@ export const createRange = (start, end, step) => {
 export const getScreentimeAlertList = (users, date) => {
   if (users === undefined) throw new Error("users is required");
   if (date === undefined) throw new Error("date is required");
+
+  // Use the filter() method to find all users with screen time data for the given date
+    const usersForDate = users.filter(u => u.screenTime.some(d => d.date === date ));
+
+    // Use the map() method to extract the usernames of these users
+    return usersForDate.map(u => u.username);
+
 };
 
 /**
@@ -69,7 +84,12 @@ export const getScreentimeAlertList = (users, date) => {
  */
 export const hexToRGB = (hexStr) => {
   if (hexStr === undefined) throw new Error("hexStr is required");
-};
+  const red = parseInt(hexStr.substring(0,1),16);
+  const green = parseInt(hexStr.substring(2,3));
+  const blue = parseInt(hexStr.substring(4,5));
+
+  return "rgb(" + red + ","+ green + ","  + blue + ")";
+}
 
 /**
  * This function takes a noughts and crosses board represented as an array, where an empty space is represented with null.
