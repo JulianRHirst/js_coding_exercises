@@ -1,3 +1,5 @@
+import { getBusNumbers } from "./exercise002";
+
 /**
  * This function will receive an array of numbers and should return the sum
  * of any numbers which are a multiple of 3 or 5
@@ -5,8 +7,9 @@
  * @returns {Number}
  */
 export const sumMultiples = (arr) => {
-  if (arr === undefined) throw new Error("arr is required");
-  return sumMultiples.filter(value => value % 3 == 0 || value % 5 ==0 )
+  if (arr === undefined || !Array.isArray(arr)) throw new Error("sumMultiples(arr): arr is required");
+
+  return arr.filter(value => ((value % 3 == 0) || (value % 5 ==0)) ).reduce((total, item)=> total+item, 0);
 };
 
 /**
@@ -15,9 +18,10 @@ export const sumMultiples = (arr) => {
  * @returns {Boolean}
  */
 export const isValidDNA = (str) => {
-  if (str === undefined) throw new Error("str is required");
-  const regex = /^[acgt]+$/;
-  return regex.test(str.toLowerCase());
+  if (str === undefined) throw new Error("isValidDNA(str): str is required");
+  // if (!(str instanceof String)) throw new Error("isValidDNA(str): str mujst be string");
+  const regex = /^[ACGT]+$/;
+  return regex.test(str);
 };
 
 /**
@@ -28,13 +32,14 @@ export const isValidDNA = (str) => {
  * @returns {String}
  */
 export const getComplementaryDNA = (str) => {
-  if (str === undefined) throw new Error("str is required");
-  const basePairs = {
+  if (str === undefined) throw new Error("getComplementaryDNA(str): str is required");
+  const basePair = {
     A: "T",
     C: "G",
     G: "C",
     T: "A"
   };
+
   return str.split("").map(base => basePair[base] ).join("");
 };
 
@@ -44,20 +49,12 @@ export const getComplementaryDNA = (str) => {
  * @returns {Boolean}
  */
 export const isItPrime = (n) => {
-  if (n === undefined) throw new Error("n is required");
+  if (n === undefined) throw new Error("isItPrime(n): n is required");
+  if (isNaN(n)) throw new Error("isItPrime(n): n must be a number");
 
-  // If n is less than 2, it is not a prime number
-  if (n < 2) return false;
+  if (n < 4 ) return false;
 
-  // If n is 2, it is a prime number
-  if (n === 2) return true;
-
-  // If n is even and not 2, it is not a prime number
-  if (n % 2 === 0) return false;
-
-  // Check if n is divisible by any odd number from 3 to the square root of n
-  // If it is, then it is not a prime number
-  for (let i = 3; i <= Math.sqrt(n); i += 2) {
+  for (let i = 2; i <= n/2; i++) {
     if (n % i === 0) return false;
   }
 
@@ -106,12 +103,8 @@ export const createMatrix = (n, fill) => {
  * @returns {Boolean}
  */
 export const areWeCovered = (staff, day) => {
-  if (staff === undefined) throw new Error("staff is required");
-  if (day === undefined) throw new Error("day is required");
+  if (!Array.isArray(staff)) throw new Error("areWeCovered(staff, day): array staff is required");
+  if (day === undefined) throw new Error("areWeCovered(staff, day): day is required");
 
-  const isCafeOpen = (staff, day) => {
-    const staffForDay = staff.filter(s => s.rota.includes(day));
-  
-    return staffForDay.length >= 3;
-  }
+  return staff.filter(s => s.rota.includes(day)).length >= 3;
 };
