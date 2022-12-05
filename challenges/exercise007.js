@@ -3,8 +3,15 @@
  * @param {Number} n
  */
 export const sumDigits = (n) => {
-  if (n === undefined) throw new Error("n is required");
-  return n.split("").reduce((total, value) => total + parseInt(value), 0);
+
+  if((n === undefined)) throw new Error("sumDigits(n): n is required");
+  if(isNaN(n)) throw new Error( "sumDigits(n): n must be a number");
+  if(n < 0) throw new Error("sumDigits(n): n must be positive");
+
+  
+
+
+  return String(n).split("").reduce((total, value) => total + parseInt(value), 0);
 };
 
 /**
@@ -16,19 +23,26 @@ export const sumDigits = (n) => {
  * @param {Number} step
  */
 export const createRange = (start, end, step = 1) => {
-  if (start === undefined) throw new Error("start is required");
-  if (end === undefined) throw new Error("end is required");
+  if (start === undefined || end === undefined)  throw new Error("createRange(start,end,step=1): start and end are required");
+
+
+  if (isNaN(step)||isNaN(start)||isNaN(end)) 
+    throw new Error ("createRange(start,end,step=1): all parameters must be numbers");
+
+  if(step===0) throw new Error("createRange(start,end,step=1): step must be non-zero");
 
     // Create an empty array
   let rangeArray = [];
   
-  for (let value = start; value <= end; value += step) {
-    rangeArray.push(value);
-  }
+  if (step > 0)
+    for (let value = start; value <= end; value += step) 
+      rangeArray.push(value);
+  else 
+    for (let value = start; value >= end; value += step) 
+      rangeArray.push(value);
 
   return rangeArray;
   
-
 };
 
 /**
@@ -60,18 +74,22 @@ export const createRange = (start, end, step = 1) => {
  * For example, if passed the above users and the date "2019-05-04" the function should return ["beth_1234"] as she used over 100 minutes of screentime on that date.
  * @param {Array} users
  */
+/*
 export const getScreentimeAlertList = (users, date) => {
   if (users === undefined) throw new Error("users is required");
   if (date === undefined) throw new Error("date is required");
 
-  // Use the filter() method to find all users with screen time data for the given date
-    const usersForDate = users.filter(u => u.screenTime.some(d => d.date === date ));
+  // Couldn't get this working and it's almost 11pm!
+    const usersForDate = users.filter(u => u.screenTime.some(d => (d.date === date)));
+    const goggleEyedUsers = usersForDate. (d.usage.reduce((total, key)=>total+d.usage[key], 0) >= 100))
 
+
+    
     // Use the map() method to extract the usernames of these users
     return usersForDate.map(u => u.username);
 
 };
-
+(/)
 /**
  * This function will receive a hexadecimal color code in the format #FF1133. A hexadecimal code is a number written in hexadecimal notation, i.e. base 16. If you want to know more about hexadecimal notation:
  * https://www.youtube.com/watch?v=u_atXp-NF6w
@@ -101,6 +119,62 @@ export const hexToRGB = (hexStr) => {
  * The function should return "X" if player X has won, "0" if the player 0 has won, and null if there is currently no winner.
  * @param {Array} board
  */
+
 export const findWinner = (board) => {
-  if (board === undefined) throw new Error("board is required");
+
+  // version 1
+
+  if (board === undefined) throw new Error("findWinner(board): board is required.");
+  
+  for(let i=0; i<3; i++) {
+
+    const rowText = board[i].join("");
+    const colText  = board[0][i]+board[1][i]+board[2][i];
+
+    if( rowText === "XXX" || colText === "XXX")
+      return "X";
+
+    if( rowText === "000" || colText === "000" )
+      return "0"
+  }
+
+  const diagonal1 = board[0][0]+board[1][1]+board[2][2];
+  const diagonal2 = board[0][2]+board[1][1]+board[2][0];
+
+  if( diagonal1 === "XXX" || diagonal2 === "XXX")
+    return "X";
+  if( diagonal1 === "000" || diagonal2 === "000" )
+    return "0"
+
+  return null;
+
+/*  
+
+    for (let i = 0; i < 3; i++) {
+
+      // check rows
+      if (board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
+        return board[i][0];
+      }
+
+
+      // check columns
+      if (board[0][i] === board[1][i] && board[1][i] === board[2][i]) {
+        return board[0][i];
+      }
+
+    }
+  
+    // Check diagonals
+    if (board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
+      return board[0][0];
+    }
+  
+    if (board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
+      return board[0][2];
+    }
+  
+    // No winner
+    return null;
+*/
 };

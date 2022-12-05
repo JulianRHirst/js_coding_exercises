@@ -1,3 +1,6 @@
+// test suites for exercise006
+// not exhaustive, but I have tried to give a fair number of examples time permitting
+
 import {
     sumMultiples, isValidDNA,  getComplementaryDNA, isItPrime, areWeCovered
 } from "../challenges/exercise006";
