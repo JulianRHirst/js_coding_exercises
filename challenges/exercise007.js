@@ -3,15 +3,13 @@
  * @param {Number} n
  */
 export const sumDigits = (n) => {
+  if (n === undefined) throw new Error("sumDigits(n): n is required");
+  if (isNaN(n)) throw new Error("sumDigits(n): n must be a number");
+  if (n < 0) throw new Error("sumDigits(n): n must be positive");
 
-  if((n === undefined)) throw new Error("sumDigits(n): n is required");
-  if(isNaN(n)) throw new Error( "sumDigits(n): n must be a number");
-  if(n < 0) throw new Error("sumDigits(n): n must be positive");
-
-  
-
-
-  return String(n).split("").reduce((total, value) => total + parseInt(value), 0);
+  return String(n)
+    .split("")
+    .reduce((total, value) => total + parseInt(value), 0);
 };
 
 /**
@@ -23,26 +21,28 @@ export const sumDigits = (n) => {
  * @param {Number} step
  */
 export const createRange = (start, end, step = 1) => {
-  if (start === undefined || end === undefined)  throw new Error("createRange(start,end,step=1): start and end are required");
+  if (start === undefined || end === undefined)
+    throw new Error(
+      "createRange(start,end,step=1): start and end are required"
+    );
 
+  if (isNaN(step) || isNaN(start) || isNaN(end))
+    throw new Error(
+      "createRange(start,end,step=1): all parameters must be numbers"
+    );
 
-  if (isNaN(step)||isNaN(start)||isNaN(end)) 
-    throw new Error ("createRange(start,end,step=1): all parameters must be numbers");
+  if (step === 0)
+    throw new Error("createRange(start,end,step=1): step must be non-zero");
 
-  if(step===0) throw new Error("createRange(start,end,step=1): step must be non-zero");
-
-    // Create an empty array
+  // Create an empty array
   let rangeArray = [];
-  
+
   if (step > 0)
-    for (let value = start; value <= end; value += step) 
-      rangeArray.push(value);
-  else 
-    for (let value = start; value >= end; value += step) 
-      rangeArray.push(value);
+    for (let value = start; value <= end; value += step) rangeArray.push(value);
+  else
+    for (let value = start; value >= end; value += step) rangeArray.push(value);
 
   return rangeArray;
-  
 };
 
 /**
@@ -74,22 +74,20 @@ export const createRange = (start, end, step = 1) => {
  * For example, if passed the above users and the date "2019-05-04" the function should return ["beth_1234"] as she used over 100 minutes of screentime on that date.
  * @param {Array} users
  */
-/*
+
 export const getScreentimeAlertList = (users, date) => {
   if (users === undefined) throw new Error("users is required");
   if (date === undefined) throw new Error("date is required");
 
   // Couldn't get this working and it's almost 11pm!
-    const usersForDate = users.filter(u => u.screenTime.some(d => (d.date === date)));
-    const goggleEyedUsers = usersForDate. (d.usage.reduce((total, key)=>total+d.usage[key], 0) >= 100))
-
-
+    const usersForDate = users.filter(u => u.screenTime.some(d => (d.date === date) && (Object.values(d.usage).reduce((total, value)=>total+value, 0) >= 10)));
     
     // Use the map() method to extract the usernames of these users
+    console.log( usersForDate.map(u => u.username ));
     return usersForDate.map(u => u.username);
 
 };
-(/)
+
 /**
  * This function will receive a hexadecimal color code in the format #FF1133. A hexadecimal code is a number written in hexadecimal notation, i.e. base 16. If you want to know more about hexadecimal notation:
  * https://www.youtube.com/watch?v=u_atXp-NF6w
@@ -101,13 +99,12 @@ export const getScreentimeAlertList = (users, date) => {
  * @param {String} str
  */
 export const hexToRGB = (hexStr) => {
-  if (hexStr === undefined) throw new Error("hexStr is required");
-  const red = parseInt(hexStr.substring(0,1),16);
-  const green = parseInt(hexStr.substring(2,3));
-  const blue = parseInt(hexStr.substring(4,5));
-
-  return "rgb(" + red + ","+ green + ","  + blue + ")";
-}
+  if (hexStr === undefined) throw new Error("hexToRGB(hexStr): hexStr is required");
+  const red = parseInt(hexStr.substring(0, 2), 16);
+  const green = parseInt(hexStr.substring(2, 4), 16);
+  const blue = parseInt(hexStr.substring(4,6), 16);
+  return "rgb(" + red + "," + green + "," + blue + ")";
+};
 
 /**
  * This function takes a noughts and crosses board represented as an array, where an empty space is represented with null.
@@ -121,34 +118,29 @@ export const hexToRGB = (hexStr) => {
  */
 
 export const findWinner = (board) => {
-
   // version 1
 
-  if (board === undefined) throw new Error("findWinner(board): board is required.");
-  
-  for(let i=0; i<3; i++) {
+  if (board === undefined)
+    throw new Error("findWinner(board): board is required.");
 
+  for (let i = 0; i < 3; i++) {
     const rowText = board[i].join("");
-    const colText  = board[0][i]+board[1][i]+board[2][i];
+    const colText = board[0][i] + board[1][i] + board[2][i];
 
-    if( rowText === "XXX" || colText === "XXX")
-      return "X";
+    if (rowText === "XXX" || colText === "XXX") return "X";
 
-    if( rowText === "000" || colText === "000" )
-      return "0"
+    if (rowText === "000" || colText === "000") return "0";
   }
 
-  const diagonal1 = board[0][0]+board[1][1]+board[2][2];
-  const diagonal2 = board[0][2]+board[1][1]+board[2][0];
+  const diagonal1 = board[0][0] + board[1][1] + board[2][2];
+  const diagonal2 = board[0][2] + board[1][1] + board[2][0];
 
-  if( diagonal1 === "XXX" || diagonal2 === "XXX")
-    return "X";
-  if( diagonal1 === "000" || diagonal2 === "000" )
-    return "0"
+  if (diagonal1 === "XXX" || diagonal2 === "XXX") return "X";
+  if (diagonal1 === "000" || diagonal2 === "000") return "0";
 
   return null;
 
-/*  
+  /*  
 
     for (let i = 0; i < 3; i++) {
 
