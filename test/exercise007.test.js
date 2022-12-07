@@ -83,11 +83,13 @@ describe("createRange", () => {
     );
   });
 
-  test("it should throw an error when any parammeter is not a number", () => {
+    test("it should throw an error when any parammeter is not a number", () => {
     expect(() => createRange("A", "A", "A")).toThrowError(
       "createRange(start,end,step=1): all parameters must be numbers"
     );
-    expect(() => createRange(1, 1, "A")).toThrowError(
+
+    const fiddlyTest = [1, 1, "A"];
+    expect(() => createRange(...fiddlyTest)).toThrowError(
       "createRange(start,end,step=1): all parameters must be numbers"
     );
     expect(() => createRange(1, "A", 1)).toThrowError(
@@ -115,7 +117,7 @@ describe("createRange", () => {
 });
 
 
-const testRGB = [
+const hexToRGBTestCases = [
     {
         hex: "000000",
         rgb: "rgb(0,0,0)"
@@ -136,18 +138,14 @@ const testRGB = [
         hex: "00003F",
         rgb: "rgb(0,0,63)"
     }
-
 ];
 
 describe("hexToRGB", () => {
-    test("test of testRGB", () => {
-      expect(hexToRGB(testRGB[0].hex) === testRGB[0].rgb).toBe(true);
-      expect(hexToRGB(testRGB[1].hex) === testRGB[1].rgb).toBe(true);
-      expect(hexToRGB(testRGB[2].hex) === testRGB[2].rgb).toBe(true);
-      expect(hexToRGB(testRGB[3].hex) === testRGB[3].rgb).toBe(true);
-      expect(hexToRGB(testRGB[4].hex) === testRGB[4].rgb).toBe(true);      
-  });
-
+  hexToRGBTestCases.forEach(testCase =>
+    test(`Test cases for hexToRGB(${testCase.hex}) = ${testCase.rgb}`, () => {
+      expect(hexToRGB(testCase.hex)).toBe(testCase.rgb)
+    })
+);
 
   test("it should throw an error when no parameter is passed", () => {
     expect(() => hexToRGB()).toThrowError(

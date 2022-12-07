@@ -80,7 +80,7 @@ export const getScreentimeAlertList = (users, date) => {
   if (date === undefined) throw new Error("date is required");
 
   // Couldn't get this working and it's almost 11pm!
-    const usersForDate = users.filter(u => u.screenTime.some(d => (d.date === date) && (Object.values(d.usage).reduce((total, value)=>total+value, 0) >= 10)));
+    const usersForDate = users.filter(u => u.screenTime.some(d => (d.date === date) && (Object.values(d.usage).reduce((total, value)=>total+value, 0) >= 100)));
     
     // Use the map() method to extract the usernames of these users
     console.log( usersForDate.map(u => u.username ));

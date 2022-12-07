@@ -2,7 +2,7 @@
 // not exhaustive, but I have tried to give a fair number of examples time permitting
 
 import {
-    sumMultiples, isValidDNA,  getComplementaryDNA, isItPrime, areWeCovered
+    sumMultiples, isValidDNA,  getComplementaryDNA, isItPrime, areWeCovered, createMatrix
 } from "../challenges/exercise006";
 
 describe('sumMultiples', () => {
@@ -40,6 +40,7 @@ describe('sumMultiples', () => {
     });
 });
 
+
 describe('isValidDNA()', () => {
     test( 'it should return true for valid DNA strings', () => {
         expect(isValidDNA('ATGC')).toBe(true);
@@ -57,11 +58,8 @@ describe('isValidDNA()', () => {
         expect(() => isValidDNA()).toThrowError('isValidDNA(str): str is required');
     });
 
-//    test( 'it should throw an error if str is not a string', () => {
- //       expect(() => isValidDNA([])).toThrowError('isValidDNA(str): str must be a String');
- //       expect(() => isValidDNA0(0)).toThrowError('isValidDNA(str): str must be a String');
- //   });
 });
+
 
 
 describe('getComplementaryDNA()', () => {
@@ -122,6 +120,60 @@ describe('isItPrime()', () => {
     });
 });
 
+/**
+ * Tests for createMatrix: 
+ * 
+ * This function should receive a number and return an array of n arrays, each filled with n items. The parameter "fill" should be used as the filler of the arrays. For example, given parameters 3 and "foo" the resulting matrix should be:
+ * [
+ *   ["foo", "foo", "foo"],
+ *   ["foo", "foo", "foo"],
+ *   ["foo", "foo", "foo"]
+ * ]
+ * @param {Number} n
+ * @param {Any} fill
+ * @returns {Array}
+ */
+
+/*
+* Test Cases:
+*/
+
+const testCasesCreateMatrix = [
+    {
+        params: [3, "foo"],
+        result:  [
+            ["foo", "foo", "foo"],
+            ["foo", "foo", "foo"],
+            ["foo", "foo", "foo"]
+        ]
+    },
+    {
+        params: [1, "foo"],
+        result:  [
+            ["foo"]
+        ]
+    },
+    {
+        params: [5, 1],
+        result:  [
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1]
+        ]
+    }
+];
+
+describe('createMatrix(n,fill)', ()=> {
+    testCasesCreateMatrix.forEach(testCase => 
+        test(`createMatrix( ${testCase.params} )`, () => {
+            expect(createMatrix(...testCase.params)).toEqual(testCase.result)
+        })
+    );
+});
+
+
 describe('areWeCovered()', () => {
     test ('it should return false if staff matrix is empty', () => {
         expect(areWeCovered([], "Monday")).toBe(false);
@@ -170,10 +222,6 @@ describe('areWeCovered()', () => {
         expect(areWeCovered(staffCoveringEveryDay, "Friday")).toBe(true);
         expect(areWeCovered(staffCoveringEveryDay, "Saturday")).toBe(true);
         expect(areWeCovered(staffCoveringEveryDay, "Sunday")).toBe(true);
-    });
-
-    test ('it should throw an error if n is not provided', () => {
-        expect(() => isItPrime()).toThrowError('isItPrime(n): n is required');
     });
 
     test ('it should throw an error if staff is not passed', () => {
